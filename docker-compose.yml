@@ -1,0 +1,26 @@
+  version: '2'
+  services:
+    rails-tutorial-db:
+      container_name: rails-tutorial-db
+      image: mysql:5.7
+      hostname: rails-tutorial-db
+      expose:
+        - 3306
+      ports:
+        - "3306:3306"
+      environment:
+        - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+        - MYSQL_DATABASE=rails_tutorial_db
+      volumes:
+        - "./docker/var/lib/mysql:/var/lib/mysql"
+
+    rails-tutorial-app:
+      container_name: rails-tutorial-app
+      build: .
+      command: ["sh", "bin/entry"]
+      volumes:
+        - .:/src
+      ports:
+        - "3000:3000"
+      links:
+        - rails-tutorial-db
